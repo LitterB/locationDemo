@@ -11,11 +11,18 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+/**
+ * @author Administrator
+ */
 public class LocationUtil {
 
-    //申请的百度地图api密钥
+    /**
+     * 申请的百度地图api密钥
+     */
     private static final String KEY = "LWGqfKwdynM3O37xhgGFx8Ma3RerjGHf";
-    //根据经纬度获取城市信息转换解析地址
+    /**
+     * 根据经纬度获取城市信息转换解析地址
+     */
     private static final String URL = "https://api.map.baidu.com/geocoder/v2/?ak=%s&location=%s&output=json&pois=1";
 
     /**
@@ -25,7 +32,7 @@ public class LocationUtil {
      * @return
      * @throws IOException
      */
-    public static JSONObject getLocationInfo(String lng, String lat) throws IOException{
+    private static JSONObject getLocationInfo(String lng, String lat) throws IOException{
         StringBuilder resultData = new StringBuilder();
         JSONObject result = new JSONObject();
         try {
@@ -50,7 +57,8 @@ public class LocationUtil {
         InputStreamReader insr = null;
         BufferedReader br = null;
         try {
-            httpsConn = (URLConnection)myURL.openConnection();//不使用代理
+            //不使用代理
+            httpsConn = (URLConnection)myURL.openConnection();
             if(httpsConn != null){
                 insr = new InputStreamReader(httpsConn.getInputStream(), "UTF-8");
                 br = new BufferedReader(insr);
@@ -82,7 +90,7 @@ public class LocationUtil {
      * @return
      * @throws IOException
      */
-    public static String getCity(String lng, String lat) throws IOException{
+    private static String getCity(String lng, String lat) throws IOException{
         String city = "";
         JSONObject para = getLocationInfo(lng, lat);
         if(para != null){
@@ -106,17 +114,17 @@ public class LocationUtil {
      * @return
      * @throws IOException
      */
-    public static String getFormattedAddress(String lng, String lat) throws IOException{
-        String formatted_address = "";
+    private static String getFormattedAddress(String lng, String lat) throws IOException{
+        String formattedAddress = "";
         JSONObject para = getLocationInfo(lng, lat);
         if(para != null){
             String result = para.getString("result");
             JSONObject paras = JSONObject.parseObject(result);
             if(paras != null){
-                formatted_address = paras.getString("formatted_address");
+                formattedAddress = paras.getString("formatted_address");
             }
         }
-        return formatted_address;
+        return formattedAddress;
     }
 
 
